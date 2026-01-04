@@ -1,25 +1,25 @@
 /********************************************************************************************
-* 	 	File: 		uStepperSLite.cpp														*
+* 	 	File: 		uStepper8b.cpp														*
 *		Version:    1.2.0                                           						*
 *      	Date: 		Jan 18, 2020 	                                    					*
 *      	Author: 	Thomas Hørring Olsen                                   					*
 *                                                   										*	
 *********************************************************************************************
-*			           			 uStepper S-lite class 					   					*
+*			           			 uStepper 8b class 					   						*
 * 																							*
 *	This file contains the implementation of the class methods, incorporated in the  		*
-*	uStepper S-lite arduino library. The library is used by instantiating an uStepper 		*
-*	S-lite object by calling either of the two overloaded constructors: 					*
+*	uStepper 8b Arduino library. The library is used by instantiating a uStepper 			*
+*	8b object by calling either of the two overloaded constructors: 						*
 *																							*
 *		example:																			*
 *																							*
-*		uStepperSLite stepper; 																*
+*		uStepper8b stepper; 																*
 *																							*
 *		OR 																					*
 *																							*
-*		uStepperSLite stepper(500, 2000);													*
+*		uStepper8b stepper(500, 2000);													*
 *																							*
-*	The first instantiation above creates a uStepper S-lite object with default 			*
+*	The first instantiation above creates a uStepper 8b object with default 				*
 *	acceleration and maximum speed (1000 steps/s^2 and 1000steps/s respectively).			*
 *	The second instantiation overwrites the default settings of acceleration and 			*
 *	maximum speed (in this case 500 steps/s^2 and 2000 steps/s, respectively);				*
@@ -29,7 +29,7 @@
 *																							*
 *		example:																			*
 *																							*
-*		uStepperSLite stepper;																*
+*		uStepper8b stepper;																*
 *																							*
 *		void setup()																		*
 *		{																					*
@@ -60,17 +60,17 @@
 *                                                                                           *
 ********************************************************************************************/
 /**
- * @file uStepperSLite.cpp
- * @brief      Class implementations for the uStepper S-lite library
+ * @file uStepper8b.cpp
+ * @brief      Class implementations for the uStepper 8b library
  *
  *             This file contains the implementations of the classes defined in
- *             uStepperSLite.h
+ *             uStepper8b.h
  *
  * @author     Thomas Hørring Olsen (thomas@ustepper.com)
  */
-#include <uStepperSLite.h>
+#include <uStepper8b.h>
 #include <math.h>
-uStepperSLite *pointer;
+uStepper8b *pointer;
 volatile int32_t *p __attribute__((used));
 i2cMaster I2C(1);
 extern "C" {
@@ -663,7 +663,7 @@ uint8_t uStepperEncoder::detectMagnet()
 	return 3;						//Something went horribly wrong !
 }
 
-uStepperSLite::uStepperSLite(float accel, float vel)
+uStepper8b::uStepper8b(float accel, float vel)
 {
 	this->state = STOP;
 
@@ -677,7 +677,7 @@ uStepperSLite::uStepperSLite(float accel, float vel)
 	DDRD |= (1 << 4);		//set enable pin to output
 }
 
-void uStepperSLite::setMaxAcceleration(float accel)
+void uStepper8b::setMaxAcceleration(float accel)
 {
 	this->acceleration = accel;
 
@@ -694,7 +694,7 @@ void uStepperSLite::setMaxAcceleration(float accel)
 	}
 }
 
-void uStepperSLite::setMaxVelocity(float vel)
+void uStepper8b::setMaxVelocity(float vel)
 {
 
 	if(vel < 0.5005)
@@ -727,7 +727,7 @@ void uStepperSLite::setMaxVelocity(float vel)
 	}
 }
 
-void uStepperSLite::runContinous(bool dir)
+void uStepper8b::runContinous(bool dir)
 {
 	float curVel, startVelocity = 0;
 	uint8_t tempState;
@@ -862,7 +862,7 @@ void uStepperSLite::runContinous(bool dir)
 	TCCR3B |= (1 << CS30);
 }
 
-void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
+void uStepper8b::moveSteps(int32_t steps, bool dir, bool holdMode)
 {
 	float curVel, startVelocity = 0;
 	uint8_t state;
@@ -1083,7 +1083,7 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 	TCCR3B |= (1 << CS30);
 }
 
-void uStepperSLite::hardStop(bool holdMode)
+void uStepper8b::hardStop(bool holdMode)
 {
 	if(this->mode == DROPIN)
 	{
@@ -1111,12 +1111,12 @@ void uStepperSLite::hardStop(bool holdMode)
 	TCCR3B |= (1 << CS30);
 }
 
-void uStepperSLite::stop(bool brake)
+void uStepper8b::stop(bool brake)
 {
 	this->softStop(brake);
 }
 
-void uStepperSLite::softStop(bool holdMode)
+void uStepper8b::softStop(bool holdMode)
 {
 	uint32_t decelSteps = 0;
 	float curVel = 0.0;
@@ -1168,7 +1168,7 @@ void uStepperSLite::softStop(bool holdMode)
 	TCCR3B |= (1 << CS30);
 }
 
-void uStepperSLite::checkConnectorOrientation(uint8_t mode)
+void uStepper8b::checkConnectorOrientation(uint8_t mode)
 {
 	uint8_t data[2], i;
 	uint16_t angle;
@@ -1239,7 +1239,7 @@ void uStepperSLite::checkConnectorOrientation(uint8_t mode)
 	}
 }
 
-void uStepperSLite::setup(	uint8_t mode = NORMAL, 
+void uStepper8b::setup(	uint8_t mode = NORMAL, 
 				float stepsPerRevolution = 3200.0, 
 				float pTerm = 0.75, 
 				float iTerm = 3.0, 
@@ -1357,22 +1357,22 @@ void uStepperSLite::setup(	uint8_t mode = NORMAL,
 	sei();
 }
 
-void uStepperSLite::enableMotor(void)
+void uStepper8b::enableMotor(void)
 {
 	this->driver.enableDriver();				//Enable motor driver
 }
 
-void uStepperSLite::disableMotor(void)
+void uStepper8b::disableMotor(void)
 {
 	this->driver.disableDriver();			//Disable motor driver
 }
 
-bool uStepperSLite::getCurrentDirection(void)
+bool uStepper8b::getCurrentDirection(void)
 {
 	return this->direction;
 }
 
-uint8_t uStepperSLite::getMotorState(void)
+uint8_t uStepper8b::getMotorState(void)
 {
 	if(this->state != STOP)
 	{
@@ -1382,28 +1382,28 @@ uint8_t uStepperSLite::getMotorState(void)
 	return 0;			//Motor not running
 }
 
-int32_t uStepperSLite::getStepsSinceReset(void)
+int32_t uStepper8b::getStepsSinceReset(void)
 {
 	return this->stepsSinceReset;
 }
 
-void uStepperSLite::setCurrent(uint8_t runCurrent, uint8_t holdCurrent)
+void uStepper8b::setCurrent(uint8_t runCurrent, uint8_t holdCurrent)
 {
 	this->driver.setCurrent(runCurrent, holdCurrent);
 }
 
-void uStepperSLite::setHoldCurrent(uint8_t holdCurrent)
+void uStepper8b::setHoldCurrent(uint8_t holdCurrent)
 {
 	this->driver.setHoldCurrent(holdCurrent);
 }
 
-void uStepperSLite::setRunCurrent(uint8_t runCurrent)
+void uStepper8b::setRunCurrent(uint8_t runCurrent)
 {
 	this->driver.setRunCurrent(runCurrent);
 }
 
 //Skal Gennemgås !
-float uStepperSLite::moveToEnd(bool dir, float stallSensitivity)
+float uStepper8b::moveToEnd(bool dir, float stallSensitivity)
 {
 	uint8_t checks = 0;
   	float pos = 0.0;
@@ -1442,7 +1442,7 @@ float uStepperSLite::moveToEnd(bool dir, float stallSensitivity)
   	return lengthMoved;
 }
 
-void uStepperSLite::moveToAngle(float angle, bool holdMode)
+void uStepper8b::moveToAngle(float angle, bool holdMode)
 {
 	float diff;
 	uint32_t steps;
@@ -1460,7 +1460,7 @@ void uStepperSLite::moveToAngle(float angle, bool holdMode)
 	}
 }
 
-void uStepperSLite::moveAngle(float angle, bool holdMode)
+void uStepper8b::moveAngle(float angle, bool holdMode)
 {
 	int32_t steps;
 
@@ -1476,7 +1476,7 @@ void uStepperSLite::moveAngle(float angle, bool holdMode)
 	}
 }
 
-void uStepperSLite::pid(float error)
+void uStepper8b::pid(float error)
 {
 	float u, uSat, temp;
 	float limit = abs(this->currentPidSpeed) + 6000.0;
@@ -1625,12 +1625,12 @@ void uStepperSLite::pid(float error)
 	}
 }
 
-void uStepperSLite::disablePid(void)
+void uStepper8b::disablePid(void)
 {
 	this->pidDisabled = 1;
 }
 
-void uStepperSLite::enablePid(void)
+void uStepper8b::enablePid(void)
 {
 	cli();
 		this->pidDisabled = 0;
@@ -1641,12 +1641,12 @@ void uStepperSLite::enablePid(void)
 	sei();
 }
 
-float uStepperSLite::getPidError(void)
+float uStepper8b::getPidError(void)
 {
 	return this->currentPidError;
 }
 
-void uStepperSLite::pidDropin(float error)
+void uStepper8b::pidDropin(float error)
 {
 	float u;
 	float limit = abs(this->currentPidSpeed) + 6000.0;
@@ -1704,7 +1704,7 @@ void uStepperSLite::pidDropin(float error)
 	this->driver.setVelocity(u);
 }
 
-bool uStepperSLite::detectStall(void)
+bool uStepper8b::detectStall(void)
 {
 	static float oldTargetPosition;
 	static float oldEncoderPosition;
@@ -1741,7 +1741,7 @@ bool uStepperSLite::detectStall(void)
 	}
 }
 
-bool uStepperSLite::isStalled(float stallSensitivity)
+bool uStepper8b::isStalled(float stallSensitivity)
 {
   	if(this->stallSensitivity > 1.0)
   	{
@@ -1758,27 +1758,27 @@ bool uStepperSLite::isStalled(float stallSensitivity)
 	return this->stall;
 }
 
-void uStepperSLite::setProportional(float P)
+void uStepper8b::setProportional(float P)
 {
 	this->pTerm = P;
 }
 
-void uStepperSLite::setIntegral(float I)
+void uStepper8b::setIntegral(float I)
 {
 	this->iTerm = I * ENCODERINTSAMPLETIME; 
 }
 
-void uStepperSLite::setDifferential(float D)
+void uStepper8b::setDifferential(float D)
 {
 	this->dTerm = D * ENCODERINTFREQ;
 }
 
-void uStepperSLite::invertDropinDir(bool invert)
+void uStepper8b::invertDropinDir(bool invert)
 {
 	this->invertPidDropinDirection = invert;
 }
 
-void uStepperSLite::parseCommand(String *cmd)
+void uStepper8b::parseCommand(String *cmd)
 {
   uint8_t i = 0;
   String value;
@@ -2184,7 +2184,7 @@ void uStepperSLite::parseCommand(String *cmd)
   
 }
 
-void uStepperSLite::dropinCli()
+void uStepper8b::dropinCli()
 {
 	static String stringInput;
 	static uint32_t t = millis();
@@ -2210,7 +2210,7 @@ void uStepperSLite::dropinCli()
 	}
 }
 
-void uStepperSLite::dropinPrintHelp()
+void uStepper8b::dropinPrintHelp()
 {
 	Serial.println(F("uStepper S-lite Dropin !"));
 	Serial.println(F(""));
@@ -2229,7 +2229,7 @@ void uStepperSLite::dropinPrintHelp()
 	Serial.println(F(""));
 }
 
-bool uStepperSLite::loadDropinSettings(void)
+bool uStepper8b::loadDropinSettings(void)
 {
 	dropinCliSettings_t tempSettings;
 
@@ -2249,14 +2249,14 @@ bool uStepperSLite::loadDropinSettings(void)
 	return 1;
 }
 
-void uStepperSLite::saveDropinSettings(void)
+void uStepper8b::saveDropinSettings(void)
 {
 	this->dropinSettings.checksum = this->dropinSettingsCalcChecksum(&this->dropinSettings);
 
 	EEPROM.put(0,this->dropinSettings);
 }
 
-uint8_t uStepperSLite::dropinSettingsCalcChecksum(dropinCliSettings_t *settings)
+uint8_t uStepper8b::dropinSettingsCalcChecksum(dropinCliSettings_t *settings)
 {
 	uint8_t i;
 	uint8_t checksum = 0xAA;

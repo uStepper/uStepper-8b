@@ -1,14 +1,14 @@
 /********************************************************************************************
-*       File:       TMC2208.cpp                           		                            *
+*       File:       TMC22xx.cpp                           		                            *
 *		Version:    1.2.0                                           						*
 *      	Date: 		Jan 18, 2020 	                                    					*
 *      	Author: 	Thomas Hørring Olsen                                   					*
 *                                                   										*
 *********************************************************************************************
-*                       TMC2208 class                   		                            *
+*                       TMC22xx class                   		                            *
 *                                                                                           *
 *   This file contains the implementation of the class methods, incorporated in the         *
-*   TMC2208 Arduino library.																*
+*   TMC22xx Arduino library.																*
 *                                                                                           *
 *********************************************************************************************
 *   (C) 2020                                                                                *
@@ -26,19 +26,19 @@
 *   caused by the use of the code contained in this file !                                  *
 *                                                                                           *
 ********************************************************************************************/
-/** @file TMC2208.cpp
- * @brief      Function prototypes and definitions for the TMC2208
+/** @file TMC22xx.cpp
+ * @brief      Function prototypes and definitions for the TMC22xx
  *             library
  *
  *             This file contains the implementations of the classes defined in
- *             TMC2208.h
+ *             TMC22xx.h
  *
  * @author     Thomas Hørring Olsen (thomas@ustepper.com)
  */
 
-#include "TMC2208.h"
+#include "TMC22xx.h"
 
-uint8_t Tmc2208::calcCRC(uint8_t datagram[], uint8_t len) {
+uint8_t Tmc22xx::calcCRC(uint8_t datagram[], uint8_t len) {
 	uint8_t crc = 0;
 	for (uint8_t i = 0; i < len; i++) {
 		uint8_t currentByte = datagram[i];
@@ -55,13 +55,20 @@ uint8_t Tmc2208::calcCRC(uint8_t datagram[], uint8_t len) {
 	return crc;
 }
 
-void Tmc2208::writeRegister(uint8_t address, int32_t value)
+void Tmc22xx::writeRegister(uint8_t address, int32_t value)
 {
 	uint8_t writeData[8];
 	//cli();
 	writeData[0] = 0x05;                         // Sync byte
-	writeData[1] = 0x00;                         // Slave address
-	writeData[2] = address | TMC2208_WRITE_BIT;  // Register address with write bit set
+	#if defined(ARDUINO_AVR_USTEPPER_S_LITE)
+	writeData[1] = 0x00;    					// Slave address
+	#elif defined(ARDUINO_AVR_USTEPPER_8_B)
+	writeData[1] = 0x03;    					// Slave address
+	#else
+	#error "Unsupported uStepper board"
+	#endif
+	                     
+	writeData[2] = address | TMC22xx_WRITE_BIT;  // Register address with write bit set
 	writeData[3] = value >> 24;                  // Register Data
 	writeData[4] = value >> 16;                  // Register Data
 	writeData[5] = value >> 8;                   // Register Data
@@ -75,16 +82,22 @@ void Tmc2208::writeRegister(uint8_t address, int32_t value)
 	//sei();
 }
 
-void Tmc2208::readRegister(uint8_t address, int32_t *value)
+void Tmc22xx::readRegister(uint8_t address, int32_t *value)
 {
 	uint8_t readData[8], dataRequest[4];
 	
 cli();
 	// Clear write bit
-	address &= ~TMC2208_WRITE_BIT;
+	address &= ~TMC22xx_WRITE_BIT;
 
 	dataRequest[0] = 0x05;                  // Sync byte
-	dataRequest[1] = 0x00;                  // Slave address
+	#if defined(ARDUINO_AVR_USTEPPER_S_LITE)
+	dataRequest[1] = 0x00;    					// Slave address
+	#elif defined(ARDUINO_AVR_USTEPPER_8_B)
+	dataRequest[1] = 0x03;    					// Slave address
+	#else
+	#error "Unsupported uStepper board"
+	#endif
 	dataRequest[2] = address;               // Register address
 	dataRequest[7] = calcCRC(dataRequest, 3);     // Cyclic redundancy check
 
@@ -106,12 +119,12 @@ cli();
 	return;
 }
 
-Tmc2208::Tmc2208(void)
+Tmc22xx::Tmc22xx(void)
 {
 
 }
 
-void Tmc2208::setup(void)
+void Tmc22xx::setup(void)
 {
 	int32_t registerSetting;
 
@@ -122,42 +135,42 @@ void Tmc2208::setup(void)
 	this->disableDriver();
 	this->uartInit();
 	registerSetting = R00;
-	registerSetting |= TMC2208_PDN_DISABLE_MASK | TMC2208_INDEX_STEP_MASK ;
-	this->writeRegister(TMC2208_GCONF, registerSetting);
+	registerSetting |= TMC22xx_PDN_DISABLE_MASK | TMC22xx_INDEX_STEP_MASK ;
+	this->writeRegister(TMC22xx_GCONF, registerSetting);
 	registerSetting = 5000;
-	this->writeRegister(TMC2208_TPWMTHRS, registerSetting);
+	this->writeRegister(TMC22xx_TPWMTHRS, registerSetting);
 	this->setCurrent(60,30);
 	this->setVelocity(0);	
 }
 
-void Tmc2208::invertDirection(bool normal)
+void Tmc22xx::invertDirection(bool normal)
 {
 	cli();
 	int32_t registerSetting;
 	registerSetting = R00;
 	if(normal == NORMALDIRECTION)
 	{
-		registerSetting |= TMC2208_PDN_DISABLE_MASK | TMC2208_INDEX_STEP_MASK;
+		registerSetting |= TMC22xx_PDN_DISABLE_MASK | TMC22xx_INDEX_STEP_MASK;
 	}
 	else
 	{
-		registerSetting |= TMC2208_PDN_DISABLE_MASK | TMC2208_INDEX_STEP_MASK | TMC2208_SHAFT_MASK;
+		registerSetting |= TMC22xx_PDN_DISABLE_MASK | TMC22xx_INDEX_STEP_MASK | TMC22xx_SHAFT_MASK;
 	}
-	this->writeRegister(TMC2208_GCONF, registerSetting);
+	this->writeRegister(TMC22xx_GCONF, registerSetting);
 	sei();
 }
 
-void Tmc2208::enableDriver(void)
+void Tmc22xx::enableDriver(void)
 {
 	PORTD &= ~(1 << 4);				//Enable motor driver
 }
 
-void Tmc2208::disableDriver(void)
+void Tmc22xx::disableDriver(void)
 {
 	PORTD |= (1 << 4);				//Disable motor driver
 }
 
-void Tmc2208::uartInit(void)
+void Tmc22xx::uartInit(void)
 {
 	UARTRXDDR &= ~(1 << UARTRXPIN);		//Set RX pin as input
 	UARTTXDDR |= (1 << UARTTXPIN);		//Set TX pin as Output
@@ -166,7 +179,7 @@ void Tmc2208::uartInit(void)
 	UARTTXPORT |= (1 << UARTTXPIN);		//Set TX pin high
 }
 
-void Tmc2208::uartSendByte(uint8_t value)
+void Tmc22xx::uartSendByte(uint8_t value)
 {
 	uint8_t mask = 1;
 	
@@ -188,44 +201,44 @@ void Tmc2208::uartSendByte(uint8_t value)
 	
 }
 
-bool Tmc2208::uartReceivePacket(uint8_t *packet __attribute__((unused)), uint8_t size __attribute__((unused)))
+bool Tmc22xx::uartReceivePacket(uint8_t *packet __attribute__((unused)), uint8_t size __attribute__((unused)))
 {
 	return 0;
 }
 
-void Tmc2208::setCurrent(uint8_t runPercent, uint8_t holdPercent)
+void Tmc22xx::setCurrent(uint8_t runPercent, uint8_t holdPercent)
 {
 	this->setRunCurrent(runPercent);
 	this->setHoldCurrent(holdPercent);
 }
 
-void Tmc2208::setRunCurrent(uint8_t runPercent)
+void Tmc22xx::setRunCurrent(uint8_t runPercent)
 {
 	int32_t registerSetting = 0;
 
 	uint8_t temp = (uint8_t)((float)runPercent * 0.31f) ;
 	this->runCurrent = temp > 31 ? 31 : temp ;
 
-	registerSetting |= (((int32_t)(this->holdCurrent & 0x1F)) << TMC2208_IHOLD_SHIFT );
-	registerSetting |= (((int32_t)(this->runCurrent & 0x1F)) << TMC2208_IRUN_SHIFT );
+	registerSetting |= (((int32_t)(this->holdCurrent & 0x1F)) << TMC22xx_IHOLD_SHIFT );
+	registerSetting |= (((int32_t)(this->runCurrent & 0x1F)) << TMC22xx_IRUN_SHIFT );
 
-	this->writeRegister(TMC2208_IHOLD_IRUN, registerSetting);
+	this->writeRegister(TMC22xx_IHOLD_IRUN, registerSetting);
 }
 
-void Tmc2208::setHoldCurrent(uint8_t holdPercent)
+void Tmc22xx::setHoldCurrent(uint8_t holdPercent)
 {
 	int32_t registerSetting = 0;
 
  	uint8_t temp = (uint8_t)((float)holdPercent * 0.31f) ;
  	this->holdCurrent = temp > 31 ? 31 : temp ;
 
- 	registerSetting |= (((int32_t)(this->holdCurrent & 0x1F)) << TMC2208_IHOLD_SHIFT );
- 	registerSetting |= (((int32_t)(this->runCurrent & 0x1F)) << TMC2208_IRUN_SHIFT );
+ 	registerSetting |= (((int32_t)(this->holdCurrent & 0x1F)) << TMC22xx_IHOLD_SHIFT );
+ 	registerSetting |= (((int32_t)(this->runCurrent & 0x1F)) << TMC22xx_IRUN_SHIFT );
 
- 	this->writeRegister(TMC2208_IHOLD_IRUN, registerSetting);
+ 	this->writeRegister(TMC22xx_IHOLD_IRUN, registerSetting);
 }
 
-void Tmc2208::setVelocity(float RPM)
+void Tmc22xx::setVelocity(float RPM)
 {
 	float dummy;
 
@@ -234,15 +247,15 @@ void Tmc2208::setVelocity(float RPM)
 
 	RPM = (int32_t)(dummy + 0.5);
 
-	this->writeRegister(TMC2208_VACTUAL, RPM);
+	this->writeRegister(TMC22xx_VACTUAL, RPM);
 }
 
-float Tmc2208::getRunCurrent(void)
+float Tmc22xx::getRunCurrent(void)
 {
 	return ((float)this->runCurrent)/0.31;
 }
 
-float Tmc2208::getHoldCurrent(void)
+float Tmc22xx::getHoldCurrent(void)
 {
 	return ((float)this->holdCurrent)/0.31;
 }

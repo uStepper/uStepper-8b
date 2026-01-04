@@ -12,8 +12,9 @@
 *	------------------------------	
 */
 
-#include <uStepperSLite.h>
-uStepperSLite stepper;
+#include <uStepper8b.h>
+
+uStepper8b stepper;
 
 void setup(void)
 {

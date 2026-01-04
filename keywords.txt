@@ -6,7 +6,8 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-uStepperSLite 	KEYWORD1
+uStepperSLite   KEYWORD1
+uStepper8b 	KEYWORD1
 uStepperEncoder	KEYWORD1
 i2cMaster	KEYWORD1
 i2cSlave	KEYWORD1

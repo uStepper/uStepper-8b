@@ -1,6 +1,6 @@
-#include <uStepperSLite.h>
+#include <uStepper8b.h>
 
-uStepperSLite stepper;
+uStepper8b stepper;
 
 void setup() {
   // put your setup code here, to run once:

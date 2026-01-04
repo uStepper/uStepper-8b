@@ -1,4 +1,4 @@
-#include <uStepperSLite.h>
+#include <uStepper8b.h>
 
 #define MICROSTEP 16//microstep setting of uStepper
 #define RES (200.0*MICROSTEP)/360.0//calculate step pr. degree
@@ -7,7 +7,7 @@
 #define MMPRDEG MMPRSTEP*RES//mm pr. degree
 #define STALLSENSITIVITY 0.9//sensitivity of the stall detection, between 0.0 and 1.0 - high number is less sensitive
 
-uStepperSLite stepper;
+uStepper8b stepper;
 
 void setup() {
   // put your setup code here, to run once:

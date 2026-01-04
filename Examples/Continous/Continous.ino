@@ -1,4 +1,6 @@
-#include <uStepperSLite.h>
+#include <uStepper8b.h>
+
+uStepper8b stepper;
 
 #define MAXACCELERATION 1500         //Max acceleration = 1500 Steps/s^2
 #define MAXVELOCITY 1100           //Max velocity = 1100 steps/s
