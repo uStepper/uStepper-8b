@@ -1,90 +1,14 @@
-/********************************************************************************************
-*       File:       uStepperServo.cpp                                                       *
-*		Version:    1.2.0                                           						*
-*      	Date: 		Jan 18, 2020 	                                    					*
-*      	Author: 	Thomas Hørring Olsen                                   					*
-*                                                   										*
-*********************************************************************************************
-*                       uStepperServo class                                                 *
-*                                                                                           *
-*   This file contains the implementation of the class methods, incorporated in the         *
-*   uStepperServo Arduino library. The library is used by instantiating an uStepperServo    *
-*   object by calling either of the two overloaded constructors:                            *
-*                                                                                           *
-*       example:                                                                            *
-*                                                                                           *
-*       uStepperServo servo;                                                                *
-*                                                                                           * 
-*                                                                                           *
-*   after instantiation of the object, the object attach function, should be called within  *
-*   arduino's setup function:                                                               *
-*                                                                                           *
-*       example:                                                                            *
-*                                                                                           *
-*       uStepperServo servo;                                                                *
-*                                                                                           *
-*       void setup()                                                                        *
-*       {                                                                                   *
-*           servo.attach(10);                                                               *
-*       }                                                                                   *
-*                                                                                           *
-*   This will attach a servo to pin 10, which is the argument of the attach function.       *
-*                                                                                           *
-*   The servo pulse widths are normally around 500 us for 0 deg and 2500 us for 180 deg.    *
-*   The default values in this library are 1472 and 2400 us - giving a work area of         *
-*   ~90-180deg. These values can be redefined to fit your servos specifications by calling  *
-*    the setMaximumPulse and SetMinimumPulse functions. However, because of running the     *
-*    stepper algorithm simultaniously with the servo, there is a risk of twitching if       *
-*    using lower values than the 1500 us.                                                   *                          
-*                                                                                           *
-*       example:                                                                            *
-*                                                                                           *
-*       uStepperServo servo;                                                                *
-*                                                                                           *
-*       void setup()                                                                        *
-*       {                                                                                   *
-*           servo.attach(10);                                                               *
-*           servo.SetMaximumPulse(2400);                                                    *
-*           servo.SetMinimumPulse(1500);//Should be kept above 1500!!                       *
-*       }                                                                                   *
-*                                                                                           *
-*   To apply the pulses to the attached servos, the refresh function should be called       *
-*   periodically at a rate of 20-50 Hz, i.e. every 50-20 ms. Calling the function more      *
-*   often than every 20 ms is not a problem for the servo library.                          *
-*                                                                                           *
-*       example                                                                             *
-*                                                                                           *
-*       uStepperServo servo;                                                                *
-*                                                                                           *
-*       void setup()                                                                        *
-*       {                                                                                   *  
-*           servo.attach(10);                                                               *
-*           servo.SetMaximumPulse(2400);                                                    *
-*           servo.SetMinimumPulse(1500);  //Should be kept above 1500!!                     *
-*       }                                                                                   *
-*                                                                                           *
-*        void loop()                                                                        *
-*       {                                                                                   *
-*           uStepperServo::refresh();                                                       *
-*       }                                                                                   *
-*   After this, the library is ready to control the Servo!                                  *
-*                                                                                           *
-*********************************************************************************************
-*   (C) 2020                                                                                *
-*                                                                                           *
-*   uStepper ApS                                                                            *
-*   www.ustepper.com                                                                        *
-*   administration@ustepper.com                                                             *
-*                                                                                           *
-*   The code contained in this file is released under the following open source license:    *
-*                                                                                           *
-*           Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International         *
-*                                                                                           *
-*   The code in this file is provided without warranty of any kind - use at own risk!       *
-*   neither uStepper ApS nor the author, can be held responsible for any damage             *
-*   caused by the use of the code contained in this file !                                  *
-*                                                                                           *
-********************************************************************************************/
+﻿/********************************************************************************************
+ * File:        /uStepperServo.cpp
+ * Project:     uStepper 8b (compatible with uStepper S-lite)
+ * Description: Part of the uStepper 8b library. TMC22xx (TMC2208/TMC2209) compatible.
+ * Author:      Thomas Olsen
+ * Copyright:   (C) 2020-2026 uStepper ApS
+ * License:     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * Warranty:    Provided "AS IS" without warranty of any kind. Use at your own risk.
+ * Website:     https://www.ustepper.com
+ * Contact:     administration@ustepper.com
+ ********************************************************************************************/
 /** @file uStepperServo.cpp
  * @brief      Function prototypes and definitions for the uStepper Servo
  *             library
@@ -92,7 +16,7 @@
  *             This file contains the implementations of the classes defined in
  *             uStepperServo.h
  *
- * @author     Thomas Hørring Olsen (thomas@ustepper.com)
+ * @author     Thomas Olsen (thomas@ustepper.com)
  */
 
 #include <uStepperServo.h>

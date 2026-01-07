@@ -1,35 +1,35 @@
+﻿/**
+ * @file uStepperSLite.h
+ * @brief Backward-compatibility shim for legacy uStepper S-Lite sketches.
+ *
+ * This header exists solely to maintain source compatibility with projects that
+ * previously included the S-Lite header. It forwards to uStepper8b.h and does
+ * not introduce additional symbols or behavior.
+ *
+ * Usage:
+ * - Legacy projects may continue to include this header unchanged.
+ * - New projects should include "uStepper8b.h" directly.
+ *
+ * Notes:
+ * - Targets TMC22xx-based drivers (TMC2208/TMC2209) via the uStepper 8b library.
+ * - Protected by an include guard to prevent multiple inclusion.
+ *
+ * Warranty:
+ * - Provided "AS IS" without warranty of any kind. Use at your own risk.
+ *
+ * @see uStepper8b.h
+ */
 /********************************************************************************************
-* 	 	File: 		uStepper8b.h 														*
-*		Version:    1.2.0                                           						*
-*      	Date: 		Jan 18, 2020 	                                    					*
-*      	Author: 	Thomas Hørring Olsen                                   					*
-*                                                   										*	
-*********************************************************************************************
-*	(C) 2020																				*
-*																							*
-*	uStepper ApS																			*
-*	www.ustepper.com 																		*
-*	administration@ustepper.com 															*
-*																							*
-*	The code contained in this file is released under the following open source license:	*
-*																							*
-*			Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International			*
-* 																							*
-* 	The code in this file is provided without warranty of any kind - use at own risk!		*
-* 	neither uStepper ApS nor the author, can be held responsible for any damage				*
-* 	caused by the use of the code contained in this file ! 									*
-*                                                                                           *
-********************************************************************************************/
-/**
-* @file uSteppersLite.h
-*
-* @brief      include of uStepper8b.h for backwards compatibility with uStepper S-Lite sketches
-*
-*             This file includes uStepper8b.h in order to provide backwards compatibility
-*
-* @author     Thomas Hørring Olsen (thomas@ustepper.com)
-*
-*/
+ * File:        /uStepperSLite.h
+ * Project:     uStepper 8b (compatible with uStepper S-lite)
+ * Description: Part of the uStepper 8b library. TMC22xx (TMC2208/TMC2209) compatible.
+ * Author:      Thomas Olsen
+ * Copyright:   (C) 2020-2026 uStepper ApS
+ * License:     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * Warranty:    Provided "AS IS" without warranty of any kind. Use at your own risk.
+ * Website:     https://www.ustepper.com
+ * Contact:     administration@ustepper.com
+ ********************************************************************************************/
 
 
 #ifndef _USTEPPER_S_LITE_H_

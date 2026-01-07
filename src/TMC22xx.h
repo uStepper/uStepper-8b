@@ -1,25 +1,14 @@
-/********************************************************************************************
-*       File:       TMC22xx.h                                                           	*
-*		Version:    1.2.0                                           						*
-*      	Date: 		Jan 18, 2020 	                                    					*
-*      	Author: 	Thomas Hørring Olsen                                   					*
-*                                                                                           *   
-*********************************************************************************************
-*   (C) 2020                                                                                *
-*                                                                                           *
-*   uStepper ApS                                                                            *
-*   www.ustepper.com                                                                        *
-*   administration@ustepper.com                                                             *
-*                                                                                           *
-*   The code contained in this file is released under the following open source license:    *
-*                                                                                           *
-*           Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International         *
-*                                                                                           *
-*   The code in this file is provided without warranty of any kind - use at own risk!       *
-*   neither uStepper ApS nor the author, can be held responsible for any damage             *
-*   caused by the use of the code contained in this file !                                  *
-*                                                                                           *
-********************************************************************************************/
+﻿/********************************************************************************************
+ * File:        /TMC22xx.h
+ * Project:     uStepper 8b (compatible with uStepper S-lite)
+ * Description: Part of the uStepper 8b library. TMC22xx (TMC2208/TMC2209) compatible.
+ * Author:      Thomas Olsen
+ * Copyright:   (C) 2020-2026 uStepper ApS
+ * License:     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * Warranty:    Provided "AS IS" without warranty of any kind. Use at your own risk.
+ * Website:     https://www.ustepper.com
+ * Contact:     administration@ustepper.com
+ ********************************************************************************************/
 /** @file TMC22xx.h
  * @brief      Function prototypes and definitions for the uStepper TMC22xx driver
  *             library
@@ -27,7 +16,7 @@
  *             This file contains class and function prototypes for the library,
  *             as well as necessary constants and global variables.
  *
- * @author     Thomas Hørring Olsen (thomas@ustepper.com)
+ * @author     Thomas Olsen (thomas@ustepper.com)
  */
 
 #ifndef TMC22XX_H_
@@ -144,9 +133,9 @@
 	#define TMC22xx_DIR_SHIFT                    9 // min.: 0, max.: 1, default: 0
 	#define TMC22xx_VERSION_MASK                 0xFF000000 // IOIN // VERSION: 0x20=first version of the IC Identical numbers mean full digital compatibility.
 	#define TMC22xx_VERSION_SHIFT                24 // min.: 0, max.: 255, default: 0
-	#define TMC22xx_FCLKTRIM_MASK                0x1F // FACTORY_CONF // FCLKTRIM (Reset default: OTP)           0…31:  Lowest  to  highest  clock  frequency.  Check  at  charge  pump  output.  The  frequency  span  is  not  guaranteed,  but  it  is  tested,  that  tuning  to  12MHz  internal  clock  is  possible.  The  devices  come  preset  to  12MHz clock frequency by OTP programming.
+	#define TMC22xx_FCLKTRIM_MASK                0x1F // FACTORY_CONF // FCLKTRIM (Reset default: OTP)           0â€¦31:  Lowest  to  highest  clock  frequency.  Check  at  charge  pump  output.  The  frequency  span  is  not  guaranteed,  but  it  is  tested,  that  tuning  to  12MHz  internal  clock  is  possible.  The  devices  come  preset  to  12MHz clock frequency by OTP programming.
 	#define TMC22xx_FCLKTRIM_SHIFT               0 // min.: 0, max.: 31, default: 0
-	#define TMC22xx_OTTRIM_MASK                  0x30 // FACTORY_CONF // OTTRIM (Default: OTP) %00:   OT=143°C, OTPW=120°C %01:  OT=150°C, OTPW=120°C %10:  OT=150°C, OTPW=143°C %11:  OT=157°C, OTPW=143°C
+	#define TMC22xx_OTTRIM_MASK                  0x30 // FACTORY_CONF // OTTRIM (Default: OTP) %00:   OT=143Â°C, OTPW=120Â°C %01:  OT=150Â°C, OTPW=120Â°C %10:  OT=150Â°C, OTPW=143Â°C %11:  OT=157Â°C, OTPW=143Â°C
 	#define TMC22xx_OTTRIM_SHIFT                 8 // min.: 0, max.: 3, default: 0
 	#define TMC22xx_IHOLD_MASK                   0x1F // IHOLD_IRUN // IHOLD (Reset default: OTP) Standstill current (0=1/32...31=32/32) In  combination  with  stealthChop  mode,  setting  IHOLD=0  allows  to  choose  freewheeling  or  coil  short circuit (passive braking) for motor stand still.
 	#define TMC22xx_IHOLD_SHIFT                  0 // min.: 0, max.: 31, default: 0
@@ -160,7 +149,7 @@
 	#define TMC22xx_TSTEP_SHIFT                  0 // min.: 0, max.: 1048575, default: 0
 	#define TMC22xx_TPWMTHRS_MASK                0x0FFFFF // TPWMTHRS // Sets the upper velocity for stealthChop voltage PWM mode.          For TSTEP = TPWMTHRS, stealthChop PWM mode is enabled, if configured. When  the  velocity  exceeds  the  limit  set  by  TPWMTHRS,  the  driver switches to spreadCycle. 0 = Disabled
 	#define TMC22xx_TPWMTHRS_SHIFT               0 // min.: 0, max.: 1048575, default: 0
-	#define TMC22xx_VACTUAL_MASK                 0xFFFFFF // VACTUAL // VACTUAL allows moving the motor by UART control. It gives the motor velocity in +-(2^23)-1 [µsteps / t] 0: Normal operation. Driver reacts to STEP input. /=0:  Motor  moves  with  the  velocity  given  by  VACTUAL.  Step  pulses  can  be  monitored  via  INDEX  output.  The  motor  direction is controlled by the sign of VACTUAL.
+	#define TMC22xx_VACTUAL_MASK                 0xFFFFFF // VACTUAL // VACTUAL allows moving the motor by UART control. It gives the motor velocity in +-(2^23)-1 [Âµsteps / t] 0: Normal operation. Driver reacts to STEP input. /=0:  Motor  moves  with  the  velocity  given  by  VACTUAL.  Step  pulses  can  be  monitored  via  INDEX  output.  The  motor  direction is controlled by the sign of VACTUAL.
 	#define TMC22xx_VACTUAL_SHIFT                0 // min.: -8388608, max.: 8388607, default: 0
 	#define TMC22xx_MSCNT_MASK                   0x03FF // MSCNT // Microstep  counter.  Indicates  actual  position in the microstep table for  CUR_A.  CUR_B  uses an  offset  of  256  into  the  table.  Reading  out MSCNT  allows  determination  of  the  motor position within the electrical wave.
 	#define TMC22xx_MSCNT_SHIFT                  0 // min.: 0, max.: 1023, default: 0
@@ -168,17 +157,17 @@
 	#define TMC22xx_CUR_A_SHIFT                  0 // min.: -255, max.: 255, default: 0
 	#define TMC22xx_CUR_B_MASK                   0x01FF0000 // MSCURACT // (signed) Actual  microstep current for motor phase  B  as  read  from  the internal  sine  wave  table  (not scaled by current setting)
 	#define TMC22xx_CUR_B_SHIFT                  16 // min.: -255, max.: 255, default: 0
-	#define TMC22xx_TOFF_MASK                    0x0F // CHOPCONF // chopper off time and driver enable, Off time setting controls duration of slow decay phase (Nclk = 12 + 32*Toff),  %0000: Driver disable, all bridges off %0001: 1 – use only with TBL = 2 %0010 ... %1111: 2 … 15 (Default: OTP, resp. 3 in stealthChop mode)
+	#define TMC22xx_TOFF_MASK                    0x0F // CHOPCONF // chopper off time and driver enable, Off time setting controls duration of slow decay phase (Nclk = 12 + 32*Toff),  %0000: Driver disable, all bridges off %0001: 1 â€“ use only with TBL = 2 %0010 ... %1111: 2 â€¦ 15 (Default: OTP, resp. 3 in stealthChop mode)
 	#define TMC22xx_TOFF_SHIFT                   0 // min.: 0, max.: 7, default: 0
-	#define TMC22xx_HSTRT_MASK                   0x70 // CHOPCONF // hysteresis start value added to HEND, %000 … %111: Add 1, 2, …, 8 to hysteresis low value HEND (1/512 of this setting adds to current setting) Attention: Effective HEND+HSTRT = 16. Hint: Hysteresis decrement is done each 16 clocks. (Default: OTP, resp. 0 in stealthChop mode)
+	#define TMC22xx_HSTRT_MASK                   0x70 // CHOPCONF // hysteresis start value added to HEND, %000 â€¦ %111: Add 1, 2, â€¦, 8 to hysteresis low value HEND (1/512 of this setting adds to current setting) Attention: Effective HEND+HSTRT = 16. Hint: Hysteresis decrement is done each 16 clocks. (Default: OTP, resp. 0 in stealthChop mode)
 	#define TMC22xx_HSTRT_SHIFT                  4 // min.: 0, max.: 7, default: 0
-	#define TMC22xx_HEND_MASK                    0x0780 // CHOPCONF // hysteresis low value OFFSET sine wave offset, %0000 … %1111: Hysteresis is -3, -2, -1, 0, 1, …, 12 (1/512 of this setting adds to current setting) This is the hysteresis value which becomes used for the hysteresis chopper. (Default: OTP, resp. 5 in stealthChop mode)
+	#define TMC22xx_HEND_MASK                    0x0780 // CHOPCONF // hysteresis low value OFFSET sine wave offset, %0000 â€¦ %1111: Hysteresis is -3, -2, -1, 0, 1, â€¦, 12 (1/512 of this setting adds to current setting) This is the hysteresis value which becomes used for the hysteresis chopper. (Default: OTP, resp. 5 in stealthChop mode)
 	#define TMC22xx_HEND_SHIFT                   7 // min.: 0, max.: 255, default: 0
-	#define TMC22xx_TBL_MASK                     0x018000 // CHOPCONF // blank time select, %00 … %11: Set comparator blank time to 16, 24, 32 or 40 clocks Hint: %00 or %01 is recommended for most applications (Default: OTP)
+	#define TMC22xx_TBL_MASK                     0x018000 // CHOPCONF // blank time select, %00 â€¦ %11: Set comparator blank time to 16, 24, 32 or 40 clocks Hint: %00 or %01 is recommended for most applications (Default: OTP)
 	#define TMC22xx_TBL_SHIFT                    15 // min.: 0, max.: 255, default: 0
 	#define TMC22xx_VSENSE_MASK                  0x020000 // CHOPCONF // sense resistor voltage based current scaling
 	#define TMC22xx_VSENSE_SHIFT                 17 // min.: 0, max.: 1, default: 0
-	#define TMC22xx_MRES_MASK                    0x0F000000 // CHOPCONF // MRES micro step resolution,          %0000: Native 256 microstep setting.          %0001 … %1000: 128, 64, 32, 16, 8, 4, 2, FULLSTEP: Reduced microstep resolution.  The  resolution  gives  the  number  of  microstep  entries  per sine quarter wave. When  choosing  a  lower  microstep  resolution,  the  driver automatically  uses  microstep  positions  which  result  in  a symmetrical wave. Number of microsteps per step pulse = 2^MRES (Selection  by  pins  unless  disabled  by  GCONF. mstep_reg_select)
+	#define TMC22xx_MRES_MASK                    0x0F000000 // CHOPCONF // MRES micro step resolution,          %0000: Native 256 microstep setting.          %0001 â€¦ %1000: 128, 64, 32, 16, 8, 4, 2, FULLSTEP: Reduced microstep resolution.  The  resolution  gives  the  number  of  microstep  entries  per sine quarter wave. When  choosing  a  lower  microstep  resolution,  the  driver automatically  uses  microstep  positions  which  result  in  a symmetrical wave. Number of microsteps per step pulse = 2^MRES (Selection  by  pins  unless  disabled  by  GCONF. mstep_reg_select)
 	#define TMC22xx_MRES_SHIFT                   24 // min.: 0, max.: 255, default: 0
 	#define TMC22xx_INTPOL_MASK                  0x10000000 // CHOPCONF // interpolation to 256 microsteps
 	#define TMC22xx_INTPOL_SHIFT                 28 // min.: 0, max.: 1, default: 0
@@ -204,13 +193,13 @@
 	#define TMC22xx_OLA_SHIFT                    6 // min.: 0, max.: 1, default: 0
 	#define TMC22xx_OLB_MASK                     0x80 // DRV_STATUS // open load indicator phase B
 	#define TMC22xx_OLB_SHIFT                    7 // min.: 0, max.: 1, default: 0
-	#define TMC22xx_T120_MASK                    0x0100 // DRV_STATUS // 120°C comparator
+	#define TMC22xx_T120_MASK                    0x0100 // DRV_STATUS // 120Â°C comparator
 	#define TMC22xx_T120_SHIFT                   8 // min.: 0, max.: 1, default: 0
-	#define TMC22xx_T143_MASK                    0x0200 // DRV_STATUS // 143°C comparator
+	#define TMC22xx_T143_MASK                    0x0200 // DRV_STATUS // 143Â°C comparator
 	#define TMC22xx_T143_SHIFT                   9 // min.: 0, max.: 1, default: 0
-	#define TMC22xx_T150_MASK                    0x0400 // DRV_STATUS // 150°C comparator
+	#define TMC22xx_T150_MASK                    0x0400 // DRV_STATUS // 150Â°C comparator
 	#define TMC22xx_T150_SHIFT                   10 // min.: 0, max.: 1, default: 0
-	#define TMC22xx_T157_MASK                    0x0800 // DRV_STATUS // 157°C comparator
+	#define TMC22xx_T157_MASK                    0x0800 // DRV_STATUS // 157Â°C comparator
 	#define TMC22xx_T157_SHIFT                   11 // min.: 0, max.: 1, default: 0
 	#define TMC22xx_CS_ACTUAL_MASK               0x1F0000 // DRV_STATUS // actual motor current
 	#define TMC22xx_CS_ACTUAL_SHIFT              16 // min.: 0, max.: 31, default: 0

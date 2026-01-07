@@ -1,36 +1,19 @@
-/********************************************************************************************
-*       File:       i2cMaster.cpp                           		                        *
-*		Version:    1.2.0                                           						*
-*      	Date: 		Jan 18, 2020 	                                    					*
-*      	Author: 	Thomas Hørring Olsen                                   					*
-*                                                   										* 
-*********************************************************************************************
-*                       i2cMaster class                   		                            *
-*                                                                                           *
-*   This file contains the implementation of the class methods, used to communicate over 	*
-*	the I2C bus.																			*
-*                                                                                           *
-*********************************************************************************************
-*   (C) 2020                                                                                *
-*                                                                                           *
-*   uStepper ApS                                                                            *
-*   www.ustepper.com                                                                        *
-*   administration@ustepper.com                                                             *
-*                                                                                           *
-*   The code contained in this file is released under the following open source license:    *
-*                                                                                           *
-*           Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International         *
-*                                                                                           *
-*   The code in this file is provided without warranty of any kind - use at own risk!       *
-*   neither uStepper ApS nor the author, can be held responsible for any damage             *
-*   caused by the use of the code contained in this file !                                  *
-*                                                                                           *
-********************************************************************************************/
+﻿/********************************************************************************************
+ * File:        /i2cMaster.cpp
+ * Project:     uStepper 8b (compatible with uStepper S-lite)
+ * Description: Part of the uStepper 8b library. TMC22xx (TMC2208/TMC2209) compatible.
+ * Author:      Thomas Olsen
+ * Copyright:   (C) 2020-2026 uStepper ApS
+ * License:     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * Warranty:    Provided "AS IS" without warranty of any kind. Use at your own risk.
+ * Website:     https://www.ustepper.com
+ * Contact:     administration@ustepper.com
+ ********************************************************************************************/
 /** @file i2cMaster.cpp
  * @brief      	This file contains the implementation of the class methods, used to
  * 				communicate over the I2C bus.
  *
- * @author     Thomas Hørring Olsen (thomas@ustepper.com)
+ * @author     Thomas Olsen (thomas@ustepper.com)
  */
 
 #include "i2cMaster.h"

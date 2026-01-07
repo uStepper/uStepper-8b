@@ -1,64 +1,14 @@
-/********************************************************************************************
-* 	 	File: 		uStepper8b.cpp														*
-*		Version:    1.2.0                                           						*
-*      	Date: 		Jan 18, 2020 	                                    					*
-*      	Author: 	Thomas Hørring Olsen                                   					*
-*                                                   										*	
-*********************************************************************************************
-*			           			 uStepper 8b class 					   						*
-* 																							*
-*	This file contains the implementation of the class methods, incorporated in the  		*
-*	uStepper 8b Arduino library. The library is used by instantiating a uStepper 			*
-*	8b object by calling either of the two overloaded constructors: 						*
-*																							*
-*		example:																			*
-*																							*
-*		uStepper8b stepper; 																*
-*																							*
-*		OR 																					*
-*																							*
-*		uStepper8b stepper(500, 2000);													*
-*																							*
-*	The first instantiation above creates a uStepper 8b object with default 				*
-*	acceleration and maximum speed (1000 steps/s^2 and 1000steps/s respectively).			*
-*	The second instantiation overwrites the default settings of acceleration and 			*
-*	maximum speed (in this case 500 steps/s^2 and 2000 steps/s, respectively);				*
-*																							*
-*	After instantiation of the object, the object setup function should be called within 	*
-*	Arduino's setup function:																*
-*																							*
-*		example:																			*
-*																							*
-*		uStepper8b stepper;																*
-*																							*
-*		void setup()																		*
-*		{																					*
-*			stepper.setup();																*
-*		} 																					*
-*																							*
-*		void loop()																			*
-*		{																					*
-*																							*
-*		}																					*
-*																							*
-*	After this, the library is ready to control the motor!									*
-*																							*
-*********************************************************************************************
-*	(C) 2018																				*
-*																							*
-*	uStepper ApS																			*
-*	www.ustepper.com 																		*
-*	administration@ustepper.com 															*
-*																							*
-*	The code contained in this file is released under the following open source license:	*
-*																							*
-*			Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International			*
-* 																							*
-* 	The code in this file is provided without warranty of any kind - use at own risk!		*
-* 	neither uStepper ApS nor the author, can be held responsible for any damage				*
-* 	caused by the use of the code contained in this file ! 									*
-*                                                                                           *
-********************************************************************************************/
+﻿/********************************************************************************************
+ * File:        /uStepper8b.cpp
+ * Project:     uStepper 8b (compatible with uStepper S-lite)
+ * Description: Part of the uStepper 8b library. TMC22xx (TMC2208/TMC2209) compatible.
+ * Author:      Thomas Olsen
+ * Copyright:   (C) 2020-2026 uStepper ApS
+ * License:     Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * Warranty:    Provided "AS IS" without warranty of any kind. Use at your own risk.
+ * Website:     https://www.ustepper.com
+ * Contact:     administration@ustepper.com
+ ********************************************************************************************/
 /**
  * @file uStepper8b.cpp
  * @brief      Class implementations for the uStepper 8b library
@@ -66,7 +16,7 @@
  *             This file contains the implementations of the classes defined in
  *             uStepper8b.h
  *
- * @author     Thomas Hørring Olsen (thomas@ustepper.com)
+ * @author     Thomas Olsen (thomas@ustepper.com)
  */
 #include <uStepper8b.h>
 #include <math.h>
@@ -751,7 +701,7 @@ void uStepper8b::runContinous(bool dir)
 		accelSteps = (uint32_t)((this->velocity * this->velocity)/(2.0*this->acceleration));	//Number of steps to bring the motor to max speed (S = (V^2 - V0^2)/(2*a)))
 
 	}
-	else if((dir == CW && curVel < 0) || (dir == CCW && curVel > 0))									//If motor turns CCW and should turn CW, or if motor turns CW and shoúld turn CCW
+	else if((dir == CW && curVel < 0) || (dir == CCW && curVel > 0))									//If motor turns CCW and should turn CW, or if motor turns CW and shoÃºld turn CCW
 	{
 		tempState = INITDECEL;									//We should decelerate the motor to full stop
 		initialDecelSteps = (uint32_t)((curVel*curVel)/(2.0*this->acceleration));		//the amount of steps needed to bring the motor to full stop. (S = (V^2 - V0^2)/(2*-a)))
@@ -909,7 +859,7 @@ void uStepper8b::moveSteps(int32_t steps, bool dir, bool holdMode)
 		}
 		startVelocity = 0.0;//sqrt(2.0*this->acceleration);	//number of interrupts before the first step should be performed.
 	}
-	else if((dir == CW && curVel < 0) || (dir == CCW && curVel > 0))									//If motor turns CCW and should turn CW, or if motor turns CW and shoúld turn CCW
+	else if((dir == CW && curVel < 0) || (dir == CCW && curVel > 0))									//If motor turns CCW and should turn CW, or if motor turns CW and shoÃºld turn CCW
 	{
 		state = INITDECEL;									//We should decelerate the motor to full stop
 		initialDecelSteps = (uint32_t)((curVel*curVel)/(2.0*this->acceleration));		//the amount of steps needed to bring the motor to full stop. (S = (V^2 - V0^2)/(2*-a)))
@@ -1402,7 +1352,7 @@ void uStepper8b::setRunCurrent(uint8_t runCurrent)
 	this->driver.setRunCurrent(runCurrent);
 }
 
-//Skal Gennemgås !
+//Skal GennemgÃ¥s !
 float uStepper8b::moveToEnd(bool dir, float stallSensitivity)
 {
 	uint8_t checks = 0;
